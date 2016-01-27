@@ -1,0 +1,306 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Emotional Factors and Stock Market</title>
+  <meta name="description" content="">
+  <meta name="author" content="Zhaohui(Max) Xiong">
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <link rel="stylesheet" href="libraries/frameworks/revealjs/css/reveal.min.css">
+  <link rel="stylesheet" href="libraries/frameworks/revealjs/css/theme/default.css" id="theme">
+  <link rel="stylesheet" href="libraries/highlighters/highlight.js/css/zenburn.css" id="theme">
+  <!--[if lt IE 9]>
+  <script src="lib/js/html5shiv.js"></script>
+  <![endif]-->  <link rel="stylesheet" href = "assets/css/ribbons.css">
+
+</head>
+<body>
+  <div class="reveal">
+    <div class="slides">
+      <section>
+   <section class='' data-state=''>
+    <h1>Emotional Factors and Stock Market</h1>
+    <h3>Princeton International School of Mathematics and Science</h3>
+
+<p><small> Zhaohui (Max) Xiong<br>
+2016-01-22 </small></p>
+
+    <aside class='notes'>
+      
+    </aside>
+   </section>
+</section>
+<section class='' data-state='' id='slide-2'>
+  <h2>Introduction of the problem</h2>
+  <p>Apple, Google, Amazon</p>
+
+<p>Stock Market: A Place where shares of companies are publicly issued and traded</p>
+
+<p>The value of a company is reflected by its market value </p>
+
+</section>
+<section class='' data-state='' id='slide-3'>
+  <h2>Can We Predict the Prices?</h2>
+  <ul>
+<li><p>Pure Number Analysis - Algorithm Trading (High Frequency Trading)</p>
+
+<ul>
+<li>Find indications of price increase and decrease</li>
+<li>Trade frequently to beat traditional investors </li>
+</ul></li>
+<li><p>Emotional Factors Analysis</p>
+
+<ul>
+<li>Investors&#39; &quot;feelings&quot;</li>
+<li>Newspaper, magazine, social media</li>
+<li>Twitter, Facebook, Wall Street Journal</li>
+</ul></li>
+</ul>
+
+</section>
+<section>
+   <section class='' data-state=''>
+    <h2>Previous Publications on Correlation Between Stock Market</h2>
+    
+    <aside class='notes'>
+      
+    </aside>
+   </section>
+   <section class='' data-state=''>
+    <h2>Previous Publications on Twitter Study</h2>
+
+<ul>
+<li><p>Twitter Mood Predicts the Stock Market</p>
+
+<ul>
+<li>Johan Bollen, Huina Mao, XiaoJun Zeng</li>
+</ul></li>
+<li><p>Results:</p>
+
+<ul>
+<li>87.6% accuracy of predicting daily price up and down</li>
+<li>Predict from 2 to 6 days</li>
+</ul></li>
+</ul>
+
+    <aside class='notes'>
+      
+    </aside>
+   </section>
+   <section class='' data-state=''>
+    <h2>Methods</h2>
+
+<ul>
+<li><p>Collecting Twitter Feeds (2/28-12/19,2008) </p>
+
+<ul>
+<li>2.7M Users, 9.8M Tweets</li>
+</ul></li>
+<li><p>Processing Data</p>
+
+<ul>
+<li>OpinionFinder</li>
+<li>Google-Profile of Mood States </li>
+<li>Dow Jones Average</li>
+</ul></li>
+<li><p>Test for Correlation
+-Granger Causality Test</p></li>
+</ul>
+
+    <aside class='notes'>
+      
+    </aside>
+   </section>
+   <section class='' data-state=''>
+    <h2>Illustration of the Methods</h2>
+
+<p><img src="assets/fig/unnamed-chunk-1-1.png" alt="plot of chunk unnamed-chunk-1"> </p>
+
+    <aside class='notes'>
+      
+    </aside>
+   </section>
+</section>
+<section>
+   <section class='' data-state=''>
+    <h2>Current Analysis</h2>
+    
+    <aside class='notes'>
+      
+    </aside>
+   </section>
+   <section class='' data-state=''>
+    <h2>My Current Work</h2>
+
+<blockquote>
+<p>I lost my wallet. I am so sad. </p>
+
+<p>I lost my wallet, but I won the lottery. I am happy.</p>
+
+<p>My life sucks. </p>
+</blockquote>
+
+    <aside class='notes'>
+      
+    </aside>
+   </section>
+   <section class='' data-state=''>
+    <h2>My Current Work</h2>
+
+<ul>
+<li>Bill McDonald and Harvard Wordlists</li>
+</ul>
+
+<pre><code>##          V1
+## 1    abuses
+## 2   abusive
+## 3   abysmal
+## 4 abysmally
+## 5     abyss
+</code></pre>
+
+<blockquote>
+<p>I (lost) my wallet. I am so (sad). (-2)</p>
+
+<p>I (lost) my wallet, but I (won) the lottery. I am (happy). (1) </p>
+
+<p>My life (sucks). (-1)</p>
+</blockquote>
+
+    <aside class='notes'>
+      
+    </aside>
+   </section>
+   <section class='' data-state=''>
+    <h2>My Current Work</h2>
+
+<ul>
+<li>Data Collection and Text Mining </li>
+</ul>
+
+<pre><code>##   DATE   CLOSE    HIGH     LOW    OPEN VOLUME                   d
+## 1    0  7784.3  7784.3 7783.05 7783.05      0 2015-12-17 03:45:00
+## 2    1 7791.35 7791.75 7782.55 7782.55      0 2015-12-17 03:46:00
+## 3    2    7797 7797.95  7790.5  7790.5      0 2015-12-17 03:47:00
+## 4    3  7796.3  7799.8  7795.3  7797.1      0 2015-12-17 03:48:00
+</code></pre>
+
+    <aside class='notes'>
+      
+    </aside>
+   </section>
+   <section class='' data-state=''>
+    <h2>My Current Work</h2>
+
+<ul>
+<li>Data Collection and Text Mining</li>
+</ul>
+
+<pre><code class="r">stock_tweets0101&lt;-searchTwitter(&#39;stock+market&#39;,n=20000, 
+                                since = &#39;2016-01-01&#39;, until = &#39;2016-01-02&#39;)
+</code></pre>
+
+<pre><code class="r">load(&quot;../stocktweets.Rdata&quot;)
+stock_tweets0101[[12]]
+</code></pre>
+
+<p>[1] &quot;SinclairASLtd: The stock market in 2015: IN a year which saw the ringgit depreciate by some 18%, exporters benefited while co... <a href="https://t.co/eTP46XpeC9">https://t.co/eTP46XpeC9</a>&quot;</p>
+
+    <aside class='notes'>
+      
+    </aside>
+   </section>
+   <section class='' data-state=''>
+    <h2>My Current Work</h2>
+
+<ul>
+<li>Bill McDonald and Harvard Wordlists</li>
+<li>Data Collection and Text Mining </li>
+<li>Data Cleaning
+
+<ul>
+<li>tm packages</li>
+<li>Removing Punctuations, Numbers, Stopwords</li>
+</ul></li>
+</ul>
+
+<p>[1] &quot;SinclairASLtd: The stock market in 2015: IN a year which saw the ringgit depreciate by some 18%, exporters benefited while co... <a href="https://t.co/eTP46XpeC9">https://t.co/eTP46XpeC9</a>&quot;</p>
+
+    <aside class='notes'>
+      
+    </aside>
+   </section>
+</section>
+<section>
+   <section class='' data-state=''>
+    <h2>Proposal and Future Plan</h2>
+    <ul>
+<li>Finish Analysis and Find the Correlation
+
+<ul>
+<li>Adding values of words</li>
+<li>Compare daily price up and down to Twitter mood</li>
+</ul></li>
+<li>Constrict the language and region</li>
+<li>Shorten the Time Interval from 1 day to 1 hour
+
+<ul>
+<li>Simultaneously running code</li>
+</ul></li>
+<li>Adding consideration of different levels of influence</li>
+</ul>
+
+    <aside class='notes'>
+      
+    </aside>
+   </section>
+</section>
+    </div>
+  </div>
+</body>
+  <script src="libraries/frameworks/revealjs/lib/js/head.min.js"></script>
+  <script src="libraries/frameworks/revealjs/js/reveal.min.js"></script>
+  <script>
+  // Full list of configuration options available here:
+  // https://github.com/hakimel/reveal.js#configuration
+  Reveal.initialize({
+    controls: true,
+    progress: true,
+    history: true,
+    center: true,
+    theme: Reveal.getQueryHash().theme || 'default', 
+    transition: Reveal.getQueryHash().transition || 'default', 
+    dependencies: [
+    // Cross-browser shim that fully implements classList -
+    // https://github.com/eligrey/classList.js/
+      { src: 'libraries/frameworks/revealjs/lib/js/classList.js', condition: function() { return !document.body.classList;}},
+      // Zoom in and out with Alt+click
+      { src: 'libraries/frameworks/revealjs/plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
+      // Speaker notes
+      { src: 'libraries/frameworks/revealjs/plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } },
+      // Remote control your reveal.js presentation using a touch device
+      //{ src: 'libraries/frameworks/revealjs/plugin/remotes/remotes.js', async: true, condition: function() { return !!document.body.classList; } }
+      ]
+  });
+  </script>  <!-- MathJax: Fall back to local if CDN offline but local image fonts are not supported (saves >100MB) -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [['$','$'], ['\\(','\\)']],
+      processEscapes: true
+    }
+  });
+</script>
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/2.0-latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<!-- <script src="https://c328740.ssl.cf1.rackcdn.com/mathjax/2.0-latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script> -->
+<script>window.MathJax || document.write('<script type="text/x-mathjax-config">MathJax.Hub.Config({"HTML-CSS":{imageFont:null}});<\/script><script src="libraries/widgets/mathjax/MathJax.js?config=TeX-AMS-MML_HTMLorMML"><\/script>')
+</script>
+<!-- LOAD HIGHLIGHTER JS FILES -->
+<script src="libraries/highlighters/highlight.js/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+<!-- DONE LOADING HIGHLIGHTER JS FILES -->
+ 
+
+</html>
