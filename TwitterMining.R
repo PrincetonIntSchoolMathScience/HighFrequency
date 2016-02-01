@@ -1,4 +1,4 @@
-list.of.packages <- c("twitteR","httr", "bit", "bit64", "rjson", "DBI","curl", "base64enc", "httpuv")
+list.of.packages <- c("twitteR","httr", "bit", "bit64", "rjson", "DBI","curl", "base64enc", "httpuv","sentiment")
 new.packages <- list.of.packages[!(list.of.packages %in% installed.packages()[,"Package"])]
 if(length(new.packages)) {
   install.packages(new.packages)
@@ -11,10 +11,10 @@ library (twitteR)
 library(tm)
 
 setup_twitter_oauth(consumer_key = 'me4TzRBA9mUpU0Fndn1mv7oWw', consumer_secret = 'N1Z9Ev0z6SPb1DpiSImlgOXxAEyao54tVzkvHY09f2yayem5sg', access_token = '4428756093-MbpUEsfNxviePaWmv5X6cv73NT0omVlmLSHkRge', access_secret = 'BDNV4leQjnrcn0KjZEL6nfOwveP5WrmztJcGRYgzUjQev')
-searchTwitter('house', 
-              geocode='40.7361,-73.9901,5mi',  
-              n= 100, 
-              retryOnRateLimit=1)
+#searchTwitter('house', 
+           #   geocode='40.7361,-73.9901,5mi',  
+            #  n= 100, 
+             # retryOnRateLimit=1)
 #authentification
 
 stock_tweets1230<-searchTwitter('stock+market',n=20000, since = '2015-12-30', until = '2015-12-31')
@@ -32,22 +32,87 @@ stock_tweets0110<-searchTwitter('stock+market',n=20000, since = '2016-01-10', un
 stock_tweets0111<-searchTwitter('stock+market',n=20000, since = '2016-01-11', until = '2016-01-12')
 stock_tweets0112<-searchTwitter('stock+market',n=20000, since = '2016-01-12', until = '2016-01-13')
 stock_tweets0113<-searchTwitter('stock+market',n=20000, since = '2016-01-13', until = '2016-01-14')
+stock_tweets0114<-searchTwitter('stock+market',n=20000, since = '2016-01-14', until = '2016-01-15')
+stock_tweets0115<-searchTwitter('stock+market',n=20000, since = '2016-01-15', until = '2016-01-16')
+stock_tweets0116<-searchTwitter('stock+market',n=20000, since = '2016-01-16', until = '2016-01-17')
+stock_tweets0117<-searchTwitter('stock+market',n=20000, since = '2016-01-17', until = '2016-01-18')
+stock_tweets0118<-searchTwitter('stock+market',n=20000, since = '2016-01-18', until = '2016-01-19')
+stock_tweets0119<-searchTwitter('stock+market',n=20000, since = '2016-01-19', until = '2016-01-20')
+stock_tweets0120<-searchTwitter('stock+market',n=20000, since = '2016-01-20', until = '2016-01-21')
+stock_tweets0121<-searchTwitter('stock+market',n=20000, since = '2016-01-21', until = '2016-01-22')
+stock_tweets0122<-searchTwitter('stock+market',n=20000, since = '2016-01-22', until = '2016-01-23')
+stock_tweets0123<-searchTwitter('stock+market',n=20000, since = '2016-01-23', until = '2016-01-24')
+stock_tweets0124<-searchTwitter('stock+market',n=20000, since = '2016-01-24', until = '2016-01-25')
+stock_tweets0125<-searchTwitter('stock+market',n=20000, since = '2016-01-25', until = '2016-01-26')
+stock_tweets0126<-searchTwitter('stock+market',n=20000, since = '2016-01-26', until = '2016-01-27')
+stock_tweets0127<-searchTwitter('stock+market',n=20000, since = '2016-01-27', until = '2016-01-28')
+stock_tweets0128<-searchTwitter('stock+market',n=20000, since = '2016-01-28', until = '2016-01-29')
+stock_tweets0129<-searchTwitter('stock+market',n=20000, since = '2016-01-29', until = '2016-01-30')
+stock_tweets0130<-searchTwitter('stock+market',n=20000, since = '2016-01-30', until = '2016-01-31')
+
+## wish to achieve periodically proceed the data
 count  = 1
 while (T){
   #stock_tweets(count) <- c(stocktweets,is.vector(searchTwitter('stock+market', n = 1000 , lang = en)))
   stock_tweets <- c(stocktweets,is.vector(searchTwitter('stock+market', n = 1000 , lang = en)))
-  stock_tweets(count) <- as.list(stock_tweets)
+  stock_tweets_count <- as.list(stock_tweets)
   count = count +1
   Sys.sleep(60)
 }
 #Twitter Keywords Searching
 
+
+## tm.plugin.mining for sentiment analysis
+library(tm.plugin.sentiment)
+library(tm.plugin.webmining)
+corp = WebCorpus(GoogleFinanceSource("AAPL"))
+
+# score corpus
+corp_score <- score(corp)
+sentixts <- metaXTS(corp_score)
+
+# chart sentiment scores
+chartSentiment(sentixts)
 #class(stock_tweets1230)
-stock_text <-sapply(stock_tweets1230,function(x) x$getText())
-stock_corpus <- Corpus(VectorSource(stock_text))
-#inspect(stock_corpus)
-stock_clean <- tm_map(stock_corpus,removePunctuation)
-stock_clean <- tm_map(stock_clean,content_transformer(tolower))
-stock_clean <- tm_map(stock_clean, removeWords, stopwords("english"))
-stock_clean <- tm_map(stock_clean,stripWhitespace)
-#inspect(stock_clean)
+stock_text <-sapply(stock_tweets0120,function(x) x$getText())
+some_txt = sapply(stock_tweets0120, function(x) x$getText())
+# remove retweet entities
+some_txt = gsub("(RT|via)((?:\\b\\W*@\\w+)+)", "", some_txt)
+# remove at people
+some_txt = gsub("@\\w+", "", some_txt)
+# remove punctuation
+some_txt = gsub("[[:punct:]]", "", some_txt)
+# remove numbers
+some_txt = gsub("[[:digit:]]", "", some_txt)
+# remove html links
+some_txt = gsub("http\\w+", "", some_txt)
+# remove unnecessary spaces
+some_txt = gsub("[ \t]{2,}", "", some_txt)
+some_txt = gsub("^\\s+|\\s+$", "", some_txt)
+# define "tolower error handling" function 
+try.error = function(x)
+{
+  # create missing value
+  y = NA
+  # tryCatch error
+  try_error = tryCatch(tolower(x), error=function(e) e)
+  # if not an error
+  if (!inherits(try_error, "error"))
+    y = tolower(x)
+  # result
+  return(y)
+}
+# lower case using try.error with sapply 
+some_txt = sapply(some_txt, try.error)
+
+# remove NAs in some_txt
+some_txt = some_txt[!is.na(some_txt)]
+names(some_txt) = NULL
+# stock_corpus <- Corpus(VectorSource(stock_text))
+# WebCorpus(stock_corpus)
+# #inspect(stock_corpus)
+# stock_clean <- tm_map(stock_corpus,removePunctuation)
+# stock_clean <- tm_map(stock_clean,content_transformer(tolower),lazy = TRUE)
+# stock_clean <- tm_map(stock_clean, removeWords, stopwords("english"))
+# stock_clean <- tm_map(stock_clean,stripWhitespace)
+# #inspect(stock_clean)
