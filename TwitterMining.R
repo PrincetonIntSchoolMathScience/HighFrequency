@@ -3,20 +3,26 @@ new.packages <- list.of.packages[!(list.of.packages %in% installed.packages()[,"
 if(length(new.packages)) {
   install.packages(new.packages)
   }
-
+#install necessary packages
 
 sapply(list.of.packages, library, character.only = TRUE)
-
 library (twitteR)
 library(tm)
+#require necessary libraries
 
-setup_twitter_oauth(consumer_key = 'me4TzRBA9mUpU0Fndn1mv7oWw', consumer_secret = 'N1Z9Ev0z6SPb1DpiSImlgOXxAEyao54tVzkvHY09f2yayem5sg', access_token = '4428756093-MbpUEsfNxviePaWmv5X6cv73NT0omVlmLSHkRge', access_secret = 'BDNV4leQjnrcn0KjZEL6nfOwveP5WrmztJcGRYgzUjQev')
+setup_twitter_oauth(consumer_key = 'me4TzRBA9mUpU0Fndn1mv7oWw', 
+                    consumer_secret = 'N1Z9Ev0z6SPb1DpiSImlgOXxAEyao54tVzkvHY09f2yayem5sg', 
+                    access_token = '4428756093-MbpUEsfNxviePaWmv5X6cv73NT0omVlmLSHkRge', 
+                    access_secret = 'BDNV4leQjnrcn0KjZEL6nfOwveP5WrmztJcGRYgzUjQev')
+# after register the developer app on twitter, the consuemr key, consumer secret, acess token and 
+#access secret will be given. Used for login in r. 
 #searchTwitter('house', 
            #   geocode='40.7361,-73.9901,5mi',  
             #  n= 100, 
              # retryOnRateLimit=1)
 #authentification
 
+# mannualy collect twitter data --> the searching may vary and some data are missing because internet is unable to connect to Twitter
 stock_tweets1230<-searchTwitter('stock+market',n=20000, since = '2015-12-30', until = '2015-12-31')
 stock_tweets1231<-searchTwitter('stock+market',n=20000, since = '2015-12-31', until = '2016-01-01')
 stock_tweets0101<-searchTwitter('stock+market',n=20000, since = '2016-01-01', until = '2016-01-02')
@@ -49,8 +55,12 @@ stock_tweets0127<-searchTwitter('stock+market',n=20000, since = '2016-01-27', un
 stock_tweets0128<-searchTwitter('stock+market',n=20000, since = '2016-01-28', until = '2016-01-29')
 stock_tweets0129<-searchTwitter('stock+market',n=20000, since = '2016-01-29', until = '2016-01-30')
 stock_tweets0130<-searchTwitter('stock+market',n=20000, since = '2016-01-30', until = '2016-01-31')
-
-## wish to achieve periodically proceed the data
+stock_tweets0131<-searchTwitter('stock+market',n=20000, since = '2016-01-31', until = '2016-02-01',lang = 'en')
+stock_tweets<-searchTwitter('stock+market',n=200, since = '2016-01-31', until = '2016-02-01',lang = 'en')
+stock_tweets0201<-searchTwitter('stock+market',n=20000, since = '2016-02-01', until = '2016-02-02')
+stock_tweets0202<-searchTwitter('stock+market',n=20000, since = '2016-02-02', until = '2016-02-03')
+stock_tweets0203<-searchTwitter('stock+market',n=20000, since = '2016-02-03', until = '2016-02-04')
+# wish to achieve periodically proceed the data
 count  = 1
 while (T){
   #stock_tweets(count) <- c(stocktweets,is.vector(searchTwitter('stock+market', n = 1000 , lang = en)))
@@ -61,14 +71,27 @@ while (T){
 }
 #Twitter Keywords Searching
 
+tweets.df <- twListToDF(stock_tweets)
+
+myCorpus <-Corpus(VectorSource(tweets.df$text))
 
 ## tm.plugin.mining for sentiment analysis
 library(tm.plugin.sentiment)
 library(tm.plugin.webmining)
-corp = WebCorpus(GoogleFinanceSource("AAPL"))
 
 # score corpus
-corp_score <- score(corp)
+corp_score <- score(myCorpus)
+c<-0
+# nn <- length(myCorpus)
+# ff <- as.factor(5)## you can add validation set for example...
+# ll <- split(as.matrix(myCorpus),ff)
+some_txt = sapply(stock_tweets0120, function(x) x$getText())
+for(i in length(some_txt)/20-1){
+  some_txt_sample <- some_txt[i:(i+19)]
+  some_txt_sample_corpus <- Corpus(VectorSource(some_txt_sample))
+  corp_score_sample <- score(some_txt_sample_corpus)
+  corp_score_sample
+}
 sentixts <- metaXTS(corp_score)
 
 # chart sentiment scores
@@ -108,7 +131,11 @@ some_txt = sapply(some_txt, try.error)
 # remove NAs in some_txt
 some_txt = some_txt[!is.na(some_txt)]
 names(some_txt) = NULL
-# stock_corpus <- Corpus(VectorSource(stock_text))
+
+
+# The following codes are previously used for corpus format. However, it is much easier to use the txt cleaning methods
+# It prevents the problem of different formats
+ stock_corpus <- Corpus(VectorSource(stock_text))
 # WebCorpus(stock_corpus)
 # #inspect(stock_corpus)
 # stock_clean <- tm_map(stock_corpus,removePunctuation)
