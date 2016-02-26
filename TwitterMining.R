@@ -1,26 +1,28 @@
-list.of.packages <- c("twitteR","httr", "bit", "bit64", "rjson", "DBI","curl", "base64enc", "httpuv","sentiment")
+#install necessary packages
+list.of.packages <- c("twitteR","httr", "bit", "bit64", "rjson", "DBI","curl", "base64enc", "httpuv","sentiment","ROAuth","plyr","dplyr","stringr","ggplot2")
 new.packages <- list.of.packages[!(list.of.packages %in% installed.packages()[,"Package"])]
 if(length(new.packages)) {
   install.packages(new.packages)
   }
-#install necessary packages
 
+#require necessary libraries
 sapply(list.of.packages, library, character.only = TRUE)
 library (twitteR)
 library(tm)
-#require necessary libraries
 
+# after register the developer app on twitter, the consuemr key, consumer secret, acess token and 
+#access secret will be given. Used for login in r.
+#authentification
 setup_twitter_oauth(consumer_key = 'me4TzRBA9mUpU0Fndn1mv7oWw', 
                     consumer_secret = 'N1Z9Ev0z6SPb1DpiSImlgOXxAEyao54tVzkvHY09f2yayem5sg', 
                     access_token = '4428756093-MbpUEsfNxviePaWmv5X6cv73NT0omVlmLSHkRge', 
                     access_secret = 'BDNV4leQjnrcn0KjZEL6nfOwveP5WrmztJcGRYgzUjQev')
-# after register the developer app on twitter, the consuemr key, consumer secret, acess token and 
-#access secret will be given. Used for login in r. 
+ 
 #searchTwitter('house', 
            #   geocode='40.7361,-73.9901,5mi',  
             #  n= 100, 
              # retryOnRateLimit=1)
-#authentification
+##Creating cumulative files of tweets
 
 # mannualy collect twitter data --> the searching may vary and some data are missing because internet is unable to connect to Twitter
 stock_tweets1230<-searchTwitter('stock+market',n=20000, since = '2015-12-30', until = '2015-12-31')
@@ -85,8 +87,10 @@ c<-0
 # nn <- length(myCorpus)
 # ff <- as.factor(5)## you can add validation set for example...
 # ll <- split(as.matrix(myCorpus),ff)
-some_txt = sapply(stock_tweets0120, function(x) x$getText())
-for(i in length(some_txt)/20-1){
+some_txt = sapply(stock_tweets1230, function(x) x$getText())
+score.sentiment<-function(sentences, pos.words, neg.words,)
+checkscore(x)
+for(i in length(some_txt)){
   some_txt_sample <- some_txt[i:(i+19)]
   some_txt_sample_corpus <- Corpus(VectorSource(some_txt_sample))
   corp_score_sample <- score(some_txt_sample_corpus)
@@ -97,8 +101,8 @@ sentixts <- metaXTS(corp_score)
 # chart sentiment scores
 chartSentiment(sentixts)
 #class(stock_tweets1230)
-stock_text <-sapply(stock_tweets0120,function(x) x$getText())
-some_txt = sapply(stock_tweets0120, function(x) x$getText())
+stock_text <-sapply(stock_tweets1230,function(x) x$getText())
+some_txt = sapply(stock_tweets1230, function(x) x$getText())
 # remove retweet entities
 some_txt = gsub("(RT|via)((?:\\b\\W*@\\w+)+)", "", some_txt)
 # remove at people
@@ -131,11 +135,32 @@ some_txt = sapply(some_txt, try.error)
 # remove NAs in some_txt
 some_txt = some_txt[!is.na(some_txt)]
 names(some_txt) = NULL
-
-
+# only run once
+ pos <- read.table("p.txt")
+neg <- read.table("n.txt")
+pos.list <- as.list(as.data.frame(t(pos)))
+neg.list <- as.list(as.data.frame(t(neg)))
+#
+toscore <- function(sentences){
+  n <- 0
+  for(i in length(sentences)){
+    for (j in length(pos.list)){
+      if(grepl(as.character(pos.list[[j]]),as.character(sentences))==TRUE){
+        n = n+1
+      }
+    }
+    for (k in length(neg.list)){
+      if(grepl(as.character(neg.list[[k]]),as.character(sentences))==TRUE){
+        n = n-1
+      }
+    }
+  }
+  return(n)
+}
+scorelist <- lapply(some_txt,toscore)
 # The following codes are previously used for corpus format. However, it is much easier to use the txt cleaning methods
 # It prevents the problem of different formats
- stock_corpus <- Corpus(VectorSource(stock_text))
+stock_corpus <- Corpus(VectorSource(stock_text))
 # WebCorpus(stock_corpus)
 # #inspect(stock_corpus)
 # stock_clean <- tm_map(stock_corpus,removePunctuation)
