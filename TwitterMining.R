@@ -143,17 +143,11 @@ neg.list <- as.list(as.data.frame(t(neg)))
 #
 toscore <- function(sentences){
   n <- 0
-  for(i in length(sentences)){
-    for (j in length(pos.list)){
-      if(grepl(as.character(pos.list[[j]]),as.character(sentences))==TRUE){
-        n = n+1
-      }
-    }
-    for (k in length(neg.list)){
-      if(grepl(as.character(neg.list[[k]]),as.character(sentences))==TRUE){
-        n = n-1
-      }
-    }
+  for (i in 1:length(pos.list)){
+    n = n+ str_count(as.character(sentences),as.character(pos.list[[i]]))
+  }
+  for (k in 1:length(neg.list)){
+    n = n - str_count(as.character(sentences),as.character(neg.list[[k]]))
   }
   return(n)
 }
