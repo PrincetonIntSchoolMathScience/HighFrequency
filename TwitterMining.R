@@ -136,7 +136,7 @@ some_txt = sapply(some_txt, try.error)
 some_txt = some_txt[!is.na(some_txt)]
 names(some_txt) = NULL
 # only run once
- pos <- read.table("p.txt")
+pos <- read.table("p.txt")
 neg <- read.table("n.txt")
 pos.list <- as.list(as.data.frame(t(pos)))
 neg.list <- as.list(as.data.frame(t(neg)))
