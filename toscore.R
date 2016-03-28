@@ -1,10 +1,12 @@
 sent <- "good well bad"
 
 toscore <- function(sentence){
-  
+  pos_sum <- 0
+  neg_sum <- 0
   pos_words <- as.character(unlist(pos.list))
   neg_words <- as.character(unlist(neg.list))
   p <- str_count(sentence, fixed(pos_words))
+  if (sum(p)>0){
   index_pos<-which( p>0, arr.ind=TRUE)
   value_pos<- p[index_pos]
   words_pos<-pos_words[index_pos]
@@ -23,10 +25,12 @@ toscore <- function(sentence){
   }
   pos_frame <- data.frame(value_pos, words_pos)
   pos_sum <-sum(value_pos)
+  }
   n <- str_count(sentence, fixed(neg_words))
-  index_neg<-which( p>0, arr.ind=TRUE)
-  value_neg<- p[index_neg]
-  words_neg<-pos_words[index_neg]
+  if(sum(n)>0){
+  index_neg<-which( n>0, arr.ind=TRUE)
+  value_neg<- n[index_neg]
+  words_neg<-neg_words[index_neg]
   for (i in 1:length(value_neg)){
     for (j in 1:length(value_neg)){
       if(i==j){
@@ -42,13 +46,14 @@ toscore <- function(sentence){
   }
   neg_frame <- data.frame(value_neg, words_neg)
   neg_sum <-sum(value_neg)
+  }
   m<- pos_sum - neg_sum
   
   return(m)
 }
 
 
-toscore
+toscore("terribleness")
 
 str_count(sent, pos_words)
 
