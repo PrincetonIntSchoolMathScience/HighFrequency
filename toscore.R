@@ -1,5 +1,4 @@
-sent <- "good well bad"
-
+ sent <- "good well bad"
 toscore <- function(sentence){
   pos_sum <- 0
   neg_sum <- 0
