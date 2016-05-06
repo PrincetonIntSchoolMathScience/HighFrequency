@@ -9,7 +9,25 @@ if(length(new.packages)) {
 sapply(list.of.packages, library, character.only = TRUE)
 library (twitteR)
 library(tm)
+library(stringr)
 
-filterStream("tweets.json", track = c("Obama", "Biden"), timeout = 10, 
-             oauth = my_oauth)
-clean(tweets.df$text)
+filterStream("tweets.json", track = c("Stock Market", "AAPL","GOOGL"),  oauth = my_oauth)
+clean_txt <- clean(tweets.df$text)
+Time1 <- str_split_fixed(tweets.df[, "created_at"] , pattern = "\\+", n=2)[, 1]
+Time2<- strptime(Time1, format = "%a %b %d %H:%M:%S")
+DataChart <- data.frame(clean_txt,Time2, toscore(clean_txt))
+
+library(dplyr)
+DataChart2 <- DataChart %>% 
+  group_by(Time2) %>%
+  summarise(summary.score = sum(toscore.clean_txt.))
+
+library(lubridate)
+DFF <- DataChart2
+second(DFF$Time2) <- 0
+
+DFF <- DFF %>%
+  group_by(Time2)%>%
+  summarize(summary.score = sum(summary.score))
+
+CompareData <- merge.data.frame(DFF,PriceTS)
