@@ -1,7 +1,7 @@
 year<-ts(CompareData$Time2) 
 egg<-ts(CompareData$summary.score)
 chic<-ts(CompareData$CLOSE)
-"granger" <-function(d, L, k = 1) 
+granger <-function(d, L, k = 1) 
 {
   #d is a bivariate time-series:  regress d[,k] on L lags of d[,1] and d[,2].
   #This is a modified version for R, in which the command ts.matrix was substituted by ts.intersect.
@@ -24,4 +24,8 @@ chic<-ts(CompareData$CLOSE)
   ftest <- ((S0 - S1)/L)/(S1/(n - 2 * L - 1))
   list(ftest = ftest, p.val = 1 - pf(ftest, L, n - 2 * L - 1), R2 = summary(z1)$r.squared)
 }
+length(egg)
+length(chic)
+sum(is.na(egg))
+sum(is.na(chic))
 granger(cbind(egg,chic),L=1)
