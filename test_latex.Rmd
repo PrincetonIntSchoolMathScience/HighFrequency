@@ -1,0 +1,11 @@
+---
+title: "Untitled"
+date: "June 7, 2016"
+output: html_document
+---
+
+Just put $$ formula $$ around the formula copied from wiki
+
+Next, the autoregression is augmented by including lagged values of x:
+
+$${\displaystyle y_{t}=a_{0}+a_{1}y_{t-1}+a_{2}y_{t-2}+\cdots +a_{m}y_{t-m}+b_{p}x_{t-p}+\cdots +b_{q}x_{t-q}+{\text{error}}_{t}.} $$
