@@ -52,8 +52,8 @@
 
 \begin{minipage}[b]{0.65\linewidth}
 \veryHuge \color{NavyBlue} \textbf{Correlations between emotional factors and the stock market} \color{Black}\\ \\% Title
-\huge \textbf{M. Xiong, S. Samsonau}\\ % Author(s)
-\huge Data Science Research Laboratory\\ % Subtitle
+\huge \textbf{M. Xiong}\\ % Author(s)
+\huge Data Science Research Laboratory. Mentor: Dr. S. Samsonau\\ % Subtitle
 \huge Princeton International School of Mathematics and Science\\ % University/organization
 \end{minipage}
 %
