@@ -11,10 +11,10 @@ library (twitteR)
 library(tm)
 library(stringr)
 library(streamR)
-filterStream("tweets1.json", track = c("Stock Market", "AAPL","GOOGL"), timeout = 300, oauth = my_oauth)
-tweets.df <- parseTweets("tweets1.json", simplify = TRUE)
-clean_txt <- clean(tweets.df$text)
-Time1 <- str_split_fixed(tweets.df[, "created_at"] , pattern = "\\+", n=2)[, 1]
+filterStream("tweets4.json", track = c("Stock Market", "AAPL","GOOGL"), oauth = my_oauth,timeout= 5400)
+tweets1.df <- parseTweets("tweets3.json", simplify = TRUE)
+clean_txt <- clean(tweets1.df$text)
+Time1 <- str_split_fixed(tweets1.df[, "created_at"] , pattern = "\\+", n=2)[, 1]
 Time2<- strptime(Time1, format = "%a %b %d %H:%M:%S")-14400
 DataChart <- data.frame(clean_txt,Time2, toscore(clean_txt))
 
@@ -32,6 +32,8 @@ DFF <- DFF %>%
   summarize(summary.score = sum(summary.score))
 
 DFF$Time2<-as.character.Date(DFF$Time2)
-CompareData <- merge.data.frame(DFF,PriceTS)
+CompareData2 <- merge.data.frame(DFF,PriceTS)
 
+library(dplyr)
+CompareData<- CompareData %>% full_join(CompareData2)
 library(MSBVAR)

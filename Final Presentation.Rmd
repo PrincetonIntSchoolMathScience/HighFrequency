@@ -1,0 +1,266 @@
+---
+title: "2015-2016 Data Science Research Presentation"
+output: html_document
+---
+## Problem Statement
+
+When people talk about stock market, they most likely relate it to the pure number analysis such as operation profitability, debt equity ratio, dividens for investors, etc. Computer algorithm controls more than fifty percent of the trading volume and human seems less important in this process than in the past. However, the factors of large capital invested by normal investors are still considerable. In order to analyze what may possibly influence the decisions made by traditional investors, I choose to study the emotion factors in investment, as information is the fundamental criteria for them. It is hard to quantify the emotion or degree of happiness or sadness. 
+
+## Introduction
+The main factor that will influence investors's emotion is the information they received about the stock market. The information can be conveyed from traditional media such as newspaper, broadcast, and television. It can also be received through modern social media including Facebook, Twitter, blogs, and numerous websites. 
+
+In order to have concrete evidence to support the potential relationship between investors' emotion and stock price or to reject this hypothesis, it is necessary to find a way to use numbers to represent the emotional level. In the reearch of the sentiment analysis, Scientists go through the lexicon and build different versions of word lists to describe the emotions when people use certain words. They conclude each word to be either positive and negative sometimes with different degrees of positivity and negativity. The simplest version would be dividing words into positive words and negative words, and positive words will be assigned to the number 1, while ngeative words will be assigned to be -1. The sum of score of all numbers in one sentence represent the negativity or positivity of the emotion.In some lexicon, words are divided into more specific categories: some words has the value of +2 or +3 and others have -3 or -4. After having a way to quantify emotion, statistical analysis can be run to verify the potential relationship. 
+
+In the Johan Bollen, Huina Mao, Xiao-jun Zeng's Twitter Mood Predicts the Stock Market, researchers choose to study whether measurementsof collective mood states derived from large-scale Twitter feedsare correlated to the value of the Dow Jones Industrial Average over time. They firstly collected more than 9.8 million tweets from 2/28/2008 to 12/19/2008 and process all the text through two sentiment analysis tool, Opinion Finder and Google-Profile of Mood States, which can analyze emotions in 6 dimensions. Then, they run the Granger-causality test to verify whether collective mood states is the predictive factor of stock price. They find an accuracy of 87.6% in predicting the daily up and own changes in the closing values of the DJIA and a reduction of the Mean Average Percentage Error by more than 6%.
+
+## Method
+
+In my research project, the approach can be divided into three sections: 
+- Tweets Collection and Cleaning 
+- Price Capture
+- Causality Test and Predicting Model
+
+I choose Twitter to be the main social media platform to collect twitter feeds. The Twitter API allows user to collect tweets based on different types of filters. I choose to search for tweets that contain certain key words. The key words are variables in the research. I choose three basic words: stock market, AAPL, and GOOGL to represent the market. After collecting data, I proceed data cleaning by converting all files into txt form. Then, the google data is collected for stock price. The last section is the granger-causality test and running cross validation to verify the relationship between emotions and stock price. 
+
+## Authorization
+```{r, eval=FALSE}
+library(ROAuth)
+my_oauth <- OAuthFactory$new(consumerKey=, 
+                             consumerSecret=, 
+                             requestURL=,
+                             accessURL=, 
+                             authURL=)
+my_oauth$handshake(cainfo = system.file("CurlSSL", "cacert.pem", package = "RCurl"))
+save(my_oauth,file = "my_oauth.Rdata")
+```
+The first step in cpatureing tweets or collecting data is connecting the local user with the Twitter API in order to use the searching function online to capture tweets. Twitter API provides certain functions for public study. After registrering an Twitter App online, authorization (handshakes) will request user to allow the access, and then the OAuthFactory function connnects the API and store the authorization information to the local file "my_oauth.Rdata".
+
+
+## StreamR
+
+```{r, eval=FALSE}
+library(streamR)
+load("my_oauth.Rdata")
+filterStream("tweets.json", track = c("Obama", "Biden"), 
+             oauth = my_oauth)
+tweets.df <- parseTweets("tweets.json", simplify = TRUE)
+
+kable(head(tweets.df))
+
+```
+
+
+Then the data capturing process first read the authorization informaiton and stream tweets that contain keyworkds entered by user in the function filterStream. It stores the data in a local variable called "tweets.json" as the format of streaming is json. Name can be changed while data will stored additionally with the same name. ParseTweets function convert all tweets collect into a data frame with time, content, user, location etc. 
+
+## Cleaning Function
+
+```{r}
+library(stringr)
+clean<-function(k){
+some_txt = k
+some_txt = gsub("(RT|via)((?:\\b\\W*@\\w+)+)", "", some_txt)
+some_txt = gsub("@\\w+", "", some_txt)
+some_txt = gsub("[[:punct:]]", "", some_txt)
+some_txt = gsub("[[:digit:]]", "", some_txt)
+some_txt = gsub("http\\w+", "", some_txt)
+some_txt = gsub("[ \t]{2,}", "", some_txt)
+some_txt = gsub("^\\s+|\\s+$", "", some_txt)
+some_txt <- str_to_lower(some_txt)
+names(some_txt) = NULL
+return(some_txt)
+}
+```
+In order to process the tweets we collect, mainly scoring the emotion of each tweet. In the scoreing function, we get rid of all special symbols, starting users name,  punctuation, digit, link, capital letter. It will be easier for judging whether one string contains on string. 
+The following is an exmaple.
+
+```{r}
+haha <- as.character("haha http://www.r-bloggers.com/")
+clean(haha)
+```
+## Scoring Emotion
+
+```{r}
+toscore <- function(sentences){
+  result_score <- runif(length(sentences))
+  for(a in 1:length(sentences) ){
+    sentence <- sentences[a]
+ 
+    pos_sum <- 0
+    neg_sum <- 0
+    pos_words <- as.character(unlist(pos.list))
+    neg_words <- as.character(unlist(neg.list))
+    p <- str_count(sentence, fixed(pos_words))
+    if (sum(p)>0){
+    index_pos<-which( p>0, arr.ind=TRUE)
+    value_pos<- p[index_pos]
+    words_pos<-pos_words[index_pos]
+    for (i in 1:length(value_pos)){
+      for (j in 1:length(value_pos)){
+        if(i==j){
+        }
+        else {
+          if (str_detect(words_pos[i],words_pos[j])==TRUE){
+            if(value_pos[j]!=0){
+              value_pos[j]<-value_pos[j]-value_pos[i]
+            }
+          }
+        }
+      }
+    }
+    pos_frame <- data.frame(value_pos, words_pos)
+    pos_sum <-sum(value_pos)
+    }
+    n <- str_count(sentence, fixed(neg_words))
+    if(sum(n)>0){
+    index_neg<-which( n>0, arr.ind=TRUE)
+    value_neg<- n[index_neg]
+    words_neg<-neg_words[index_neg]
+    for (i in 1:length(value_neg)){
+      for (j in 1:length(value_neg)){
+        if(i==j){
+        }
+        else {
+          if (str_detect(words_neg[i],words_neg[j])==TRUE){
+            if(value_neg[j]!=0){
+              value_neg[j]<-value_neg[j]-value_neg[i]
+            }
+          }
+        }
+      }
+    }
+    neg_frame <- data.frame(value_neg, words_neg)
+    neg_sum <-sum(value_neg)
+    }
+    m<- pos_sum - neg_sum
+    
+    result_score[a] <- m
+    print(paste0("score progress ",a/length(sentences)*100, " %"))
+  
+  }
+  return(result_score)
+}
+```
+
+In the scoring function, we use a for loop to search for the positive or negtive word in one specific string. It is fairly easy to achieve by lookup each word in the word list and record number of positive words and negtive words and calculate the difference bweteen them. However, we also have to get rid of the repetitive count when two positive words or two negative words contain one of the other. The for loop firstly run through negative words and delete repetitive terms and executes in the same way for positive words. 
+```{r}
+##toscore("good apple")
+```
+
+## Capturing Price
+```{r, eval= FALSE}
+library(RCurl)
+library(stringr)
+tmp <- getURL(
+  str_c('http://www.google.com/finance/getprices?',
+        'q=.NSEI',
+        '&i=60',
+        '&p=15d',
+        '&f=d,o,h,l,c,v')
+)
+
+tmp <- str_split(tmp,'\n')
+tmp <- unlist(tmp)
+
+offset <- tmp %>% 
+  str_subset("TIMEZONE_OFFSET=") %>%
+  str_replace(pattern = 'TIMEZONE_OFFSET=', "") %>%
+  as.numeric()
+
+offset.line.num <- which(str_detect(tmp, pattern = "TIME"))
+
+
+data <- tmp[ -c(1:offset.line.num) ]
+#data <- str_replace(data, str_c("a", as.character(base.date) ), "0")
+
+data <- str_split(data, ",")
+data <- do.call('rbind',data)
+df <- as.data.frame(data)
+
+names(df) <- tmp %>% 
+  str_subset("COLUMNS=") %>%
+  str_replace(pattern = 'COLUMNS=', "") %>%
+  str_split(",") %>% 
+  unlist() 
+
+PriceTS <- subset(df,select = c(1,2))
+PriceTS["Time2"]<-NA
+base.date<-0
+for (i in 1:length(PriceTS$DATE)){
+  if (str_detect(PriceTS$DATE[i], pattern = "a")==TRUE){
+    base.date <- PriceTS$DATE[i] %>%
+      str_extract("a[0-9]+") %>%
+      str_extract("[0-9]+") %>%
+      as.numeric()
+    b.d <- as.POSIXct(base.date+offset*60, origin = '1970-01-01',tz = "UTC")
+    b.d <- str_replace(b.d," UTC","")
+    PriceTS$Time2[i]<-b.d
+  }
+  else{
+    b.d <- as.POSIXct(base.date+(offset+as.numeric(as.character(PriceTS$DATE[i])))*60, origin = '1970-01-01',tz = "UTC")
+    b.d <- str_replace(b.d," UTC","")
+    PriceTS$Time2[i]<-b.d
+  }
+  
+}
+
+PriceTS <- subset(PriceTS,select = c(2,3))
+```
+Google provides last 15 days of data with one minutes interval. We only have to contruct the url string to access the txt format of table and then format them together. We first go to the url, get organize the data into columns. We then search for the time stamp, which is in POSCIX format. Then we convert it to EST and get two columns from this data frame: price closed and time for the future analysis 
+
+## Merge Data Frame
+```{r, eval=FALSE}
+DataChart <- data.frame(clean_txt,Time2, toscore(clean_txt))
+
+library(dplyr)
+DataChart2 <- DataChart %>% 
+  group_by(Time2) %>%
+  summarise(summary.score = sum(toscore.clean_txt.))
+
+library(lubridate)
+DFF <- DataChart2
+second(DFF$Time2) <- 0
+
+DFF <- DFF %>%
+  group_by(Time2)%>%
+  summarize(summary.score = sum(summary.score))
+
+DFF$Time2<-as.character.Date(DFF$Time2)
+CompareData <- merge.data.frame(DFF,PriceTS)
+```
+After we put the tweets into a data frame, we then run the clean and score functions to process the information we have. Then merge the score and the price tables by time. Meanwhile, we also make the smallest units to be 1 minutes instead of 1 second because Google data does not provide the instaneous price. 
+
+## Causality Test
+```{r, eval = FALSE}
+year<-ts(CompareData$Time2) 
+egg<-ts(CompareData$summary.score)
+chic<-ts(CompareData$CLOSE)
+"granger" <-function(d, L, k = 1) 
+{
+  #d is a bivariate time-series:  regress d[,k] on L lags of d[,1] and d[,2].
+  #This is a modified version for R, in which the command ts.matrix was substituted by ts.intersect.
+  names.d <- dimnames(d)[[2]]
+  D <- d
+  for(i in 1:L) 
+  {
+    D <-ts.intersect(D, lag(d,  i))
+    #don't you find -1 bizarre here and it annoying to need the loop
+  }
+  dimnames(D)[[2]] <- paste(rep(names.d, L + 1), "_", rep(0:L, times = rep(2, L + 1)), sep = "")
+  y  <- D[, k]
+  n  <- length(y)
+  x1 <- D[,  - (1:2)]
+  x0 <- x1[, ((1:L) * 2) - (k %% 2)]
+  z1 <- lm(y ~ x1)
+  z0 <- lm(y ~ x0)
+  S1 <- sum(z1$resid^2) 
+  S0 <- sum(z0$resid^2)
+  ftest <- ((S0 - S1)/L)/(S1/(n - 2 * L - 1))
+  list(ftest = ftest, p.val = 1 - pf(ftest, L, n - 2 * L - 1), R2 = summary(z1)$r.squared)
+}
+granger(cbind(egg,chic),L=1)
+```
+GrangerCausality Test shows that whether one factor is the predictive factors of another. It uses one factor at first then use two factors to see the correlation between two polynomials by F test. The result will show R square, the percentage of data or correlation that can be explained. It will tell whether a factor is significant predictive factor of the other. In this test, we wants to see whether emotion is the deterministic factor of the stock price. We only have to assgin our previous two columns to be time series data and run the granger-causality test code. 
+
+## Conclusion
+After I run a few test data.One of the largest data set showed me that the R square of the relationship is only 2 percent. Means that from the smaller scale of the perspective, the emtion does not have strong correlation with the stock market data. However, it may be caused by the bias of key words, the amount of data provided, or the positive negative word lists. 
+How we actually calculate the emotion is flawed. Think more about the content of the scoring mechanism, we will naturally realize that our emotions do not purely depend on the word we choose, but also include the content of the sentences. 
