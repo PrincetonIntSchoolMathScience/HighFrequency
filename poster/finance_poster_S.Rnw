@@ -37,6 +37,8 @@
 \usepackage[font=small,labelfont=bf]{caption} % Required for specifying captions to tables and figures
 \usepackage{amsfonts, amsmath, amsthm, amssymb} % For math fonts, symbols and environments
 \usepackage{wrapfig} % Allows wrapping text around tables and figures
+\usepackage{caption}
+\usepackage{lipsum}
 
 \begin{document}
 
@@ -81,13 +83,7 @@ e-mail: \texttt{Max.Xiong@prismsus.org}\\ % Email address
 
 \begin{abstract}
 
-Sed fringilla tempus hendrerit. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Etiam ut elit sit amet metus lobortis consequat sit amet in libero. 
-
-<<size ="small">>=
-library(knitr)
-kable(head(mtcars))
-@
-
+When people talk about stock market, they most likely relate it to the pure number analysis such as operation profitability, debt equity ratio, dividens for investors, etc. Computer algorithm controls more than fifty percent of the trading volume and human seems less important in this process than in the past. However, the factors of large capital invested by normal investors are still considerable. In order to analyze what may possibly influence the decisions made by traditional investors, this research studies the emotion factors in investment, as information is the fundamental criteria for normal investors by quantifying the emtional levels
 
 \end{abstract}
 
@@ -99,17 +95,44 @@ kable(head(mtcars))
 
 \section*{Introduction}
 
-Aliquam non lacus dolor, \textit{a aliquam quam} \cite{Smith:2012qr}. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nulla in nibh mauris. Donec vel ligula nisi, a lacinia arcu. Sed mi dui, malesuada vel consectetur et, egestas porta nisi. Sed eleifend pharetra dolor, et dapibus est vulputate eu. \textbf{Integer faucibus elementum felis vitae fringilla.} 
+The main factor that will influence investors's emotion is the information they received about the stock market. The information can be conveyed from traditional media such as newspaper, broadcast, and television. It can also be received through modern social media including Facebook, Twitter, blogs, and numerous websites. 
 
-<<size ="small">>=
-library(ggplot2)
-ggplot(data = mpg) + 
-  geom_point(mapping = aes(x = displ, y = hwy, 
-                           color = class))
-@
+\subsection*{Motivation}
+
+In order to have concrete evidence to support the potential relationship between investors' emotion and stock price or to reject this hypothesis, it is necessary to find a way to use numbers to represent the emotional level. In the reearch of the sentiment analysis, Scientists go through the lexicon and build different versions of word lists to describe the emotions when people use certain words. They conclude each word to be either positive and negative sometimes with different degrees of positivity and negativity. The simplest version would be dividing words into positive words and negative words, and positive words will be assigned to the number 1, while ngeative words will be assigned to be -1. The sum of score of all numbers in one sentence represent the negativity or positivity of the emotion.In some lexicon, words are divided into more specific categories: some words has the value of +2 or +3 and others have -3 or -4. After having a way to quantify emotion, statistical analysis can be run to verify the potential relationship. 
+
+\subsection*{Others did}
+
+In \cite{bollen2011twitter} researchers did:
+\begin{itemize}
+\item Data:9.8 million tweets from 2/28/2008 to 12/19/2008
+\item Analysis tools: Opinion Finder and Google-Profile of Mood States (can analyze emotions in 6 dimensions) 
+\item Granger-causality test
+\item Prediction interval: 1 day
+\item Results: 87.6 percentin predicting the daily up and own changes in the closing values of the DJIA and a reduction of the Mean Average Percentage Error by more than 6 percent.
+\end{itemize}
 
 
-\textit{Aliquam auctor}, metus id ultrices porta, risus enim cursus sapien, quis iaculis sapien tortor sed odio. Mauris ante orci, euismod vitae tincidunt eu, porta ut neque. Aenean sapien est, viverra vel lacinia nec, venenatis eu nulla. Maecenas ut nunc nibh, et tempus libero. Aenean vitae risus ante. Pellentesque condimentum dui. Etiam sagittis purus non tellus tempor volutpat. Donec et dui non massa tris
+\begin{figure}[!ht]
+  \caption{A picture of a gull.}
+  \centering
+    \includegraphics[width=0.5\textwidth]{TwitterPredictionPulibcation.png}
+\end{figure}
+
+\begin{minipage}[b]{0.14\linewidth}
+\centering
+\includegraphics[width=24cm]{TwitterPredictionPulibcation.png} % Logo or a photo of you, adjust its dimensions here
+\end{minipage}
+
+
+
+\subsection*{This project}
+
+Main parts:
+
+* Create code to impleme
+
+
 %----------------------------------------------------------------------------------------
 %	OBJECTIVES
 %----------------------------------------------------------------------------------------
@@ -118,15 +141,12 @@ ggplot(data = mpg) +
 
 \section*{Main Objectives}
 
+
 \begin{enumerate}
-\item Lorem ipsum dolor sit amet, consectetur.
-\item Nullam at mi nisl. Vestibulum est purus, ultricies cursus volutpat sit amet, vestibulum eu.
-\item Praesent tortor libero, vulputate quis elementum a, iaculis.
-\item Phasellus a quam mauris, non varius mauris. Fusce tristique, enim tempor varius porta, elit purus commodo velit, pretium mattis ligula nisl nec ante.
-\item Ut adipiscing accumsan sapien, sit amet pretium.
-\item Estibulum est purus, ultricies cursus volutpat
-\item Nullam at mi nisl. Vestibulum est purus, ultricies cursus volutpat sit amet, vestibulum eu.
-\item Praesent tortor libero, vulputate quis elementum a, iaculis.
+\item Caputure and Clean Tweets
+\item Capture Stock Price Data
+\item Score Tweets and Merge by Time
+\item Granger-Causality Test and Analysis
 \end{enumerate}
 
 %----------------------------------------------------------------------------------------
@@ -135,37 +155,76 @@ ggplot(data = mpg) +
 
 \section*{Materials and Methods}
 
-Fusce magna risus, molestie ut porttitor in, consectetur sed mi. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Pellentesque consectetur blandit pellentesque. Sed odio justo, viverra nec porttitor vel, lacinia a nunc. Suspendisse pulvinar euismod arcu, sit amet accumsan enim fermentum quis. In id mau, ante massa luctus libero, quis tristique purus urna nec nibh.
+I choose Twitter to be the main social media platform to collect twitter feeds. The Twitter API allows user to collect tweets based on different types of filters. I choose to search for tweets that contain certain key words. The key words are the independent variables in the research. And I have chosen stock market to be the keyword in my research. After collecting data, I proceed data cleaning by converting all files into txt form in order to be scored according to the sentiment analysis wordlist.Then, the google data is collected for stock price. The last section is the granger-causality test and running cross validation to verify the relationship between emotions and stock price.
 
 %------------------------------------------------
 
-\subsection*{Mathematical Section}
+\subsection*{Coding Section}
 
-Nulla vel nisl sed mauris auctor mollis non sed. 
+<<echo=F>>=
+load("CompareData.Rdata")
+load("CopyOftweetsdataframe.Rdata")
+library(knitr)
+@
 
-\begin{equation}
-E = mc^{2}
-\label{eqn:Einstein}
-\end{equation}
 
-Curabitur mi sem, pulvinar quis aliquam rutrum. (1) edf (2)
-, $\Omega=[-1,1]^3$, maecenas leo est, ornare at. $z=-1$ edf $z=1$ sed interdum felis dapibus sem. $x$ set $y$ ytruem. 
-Turpis $j$ amet accumsan enim $y$-lacina; 
-ref $k$-viverra nec porttitor $x$-lacina. 
+\begin{itemize}
+\item The first step in cpatureing tweets or collecting data is connecting the local user with the Twitter API in order to use the searching function online to capture tweets. Twitter API provides certain functions for public study. After registrering an Twitter App online, authorization (handshakes) will request user to allow the access, and then the OAuthFactory function connnects the API and store the authorization information to the local file my\_oauth.Rdata.
+\\
 
-Vestibulum ac diam a odio tempus congue. Vivamus id enim nisi:
 
-\begin{eqnarray}
-\cos\bar{\phi}_k Q_{j,k+1,t} + Q_{j,k+1,x}+\frac{\sin^2\bar{\phi}_k}{T\cos\bar{\phi}_k} Q_{j,k+1} &=&\nonumber\\ 
--\cos\phi_k Q_{j,k,t} + Q_{j,k,x}-\frac{\sin^2\phi_k}{T\cos\phi_k} Q_{j,k}\label{edgek}
-\end{eqnarray}
-and
-\begin{eqnarray}
-\cos\bar{\phi}_j Q_{j+1,k,t} + Q_{j+1,k,y}+\frac{\sin^2\bar{\phi}_j}{T\cos\bar{\phi}_j} Q_{j+1,k}&=&\nonumber \\
--\cos\phi_j Q_{j,k,t} + Q_{j,k,y}-\frac{\sin^2\phi_j}{T\cos\phi_j} Q_{j,k}.\label{edgej}
-\end{eqnarray} 
+<<echo=FALSE, >>=
+#tweets.df[1, 1]
+#knitr::kable(tweets.df[1,1])
+library(pander)
+pander::pander(tweets.df[1, 1])
+@
 
-Nulla sed arcu arcu. Duis et ante gravida orci venenatis tincidunt. Fusce vitae lacinia metus. Pellentesque habitant morbi. $\mathbf{A}\underline{\xi}=\underline{\beta}$ Vim $\underline{\xi}$ enum nidi $3(P+2)^{2}$ lacina. Id feugain $\mathbf{A}$ nun quis; magno. Fusce convallis rutrum turpis, quis aliquet enim accumsan id. Vestibulum ullamcorper porttitor convallis. Integer sagittis interdum malesuada. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Sed adipiscing tristique orci at ullamcorper. Morbi accumsan, urna et porttitor pulvinar, lacus risus dignissim massa. Proin sollicitudin. Pellentesque eget orci eros. Fusce ultricies, tellus et pellentesque fringilla, ante massa luctus libero, quis tristique purus urna nec nibh.
+\bigskip
+
+\item Then the data capturing process first read the authorization informaiton and stream tweets that contain keyworkds entered by user in the function filterStream. It stores the data in a local variable called "tweets.json" as the format of streaming is json. Name can be changed while data will stored additionally with the same name. ParseTweets function convert all tweets collect into a data frame with time, content, user, location etc. 
+
+
+\item In order to process the tweets we collect, mainly scoring the emotion of each tweet. In the scoreing function, we get rid of all special symbols, starting users name,  punctuation, digit, link, capital letter. It will be easier for judging whether one string contains on string. 
+
+<<myplot, fig.height=3, echo=FALSE>>=
+library(ggplot2)
+ggplot(data = CompareData, aes(y = summary.score, x = " ")) + 
+  geom_boxplot() +
+  ylab("Score") +
+  ggtitle("Score Distribution")
+
+@
+
+
+\item In the scoring function, we use a for loop to search for the positive or negtive word in one specific string. It is fairly easy to achieve by lookup each word in the word list and record number of positive words and negtive words and calculate the difference bweteen them. However, we also have to get rid of the repetitive count when two positive words or two negative words contain one of the other. The for loop firstly run through negative words and delete repetitive terms and executes in the same way for positive words. 
+
+\item Google provides last 15 days of data with one minutes interval. We only have to contruct the url string to access the txt format of table and then format them together. We first go to the url, get organize the data into columns. We then search for the time stamp, which is in POSCIX format. Then we convert it to EST and get two columns from this data frame: price closed and time for the future analysis 
+\\
+
+
+<<echo=FALSE, >>=
+knitr::kable(head(CompareData))
+@
+
+
+\item After we put the tweets into a data frame, we then run the clean and score functions to process the information we have. Then merge the score and the price tables by time. Meanwhile, we also make the smallest units to be 1 minutes instead of 1 second because Google data does not provide the instaneous price. 
+
+\item Granger Causality Test shows that whether one factor is the predictive factors of another. It uses one factor at first then use two factors to see the correlation between two polynomials by F test. The result will show R square, the percentage of data or correlation that can be explained. It will tell whether a factor is significant predictive factor of the other. In this test, we wants to see whether emotion is the deterministic factor of the stock price. We only have to assgin our previous two columns to be time series data and run the granger-causality test code. 
+
+
+<<message=FALSE, echo=FALSE>>=
+source("GrangerTest.R")
+kable(resDF)
+@
+
+
+
+
+\end{itemize}
+
+
+
 
 %----------------------------------------------------------------------------------------
 %	RESULTS 
@@ -173,53 +232,8 @@ Nulla sed arcu arcu. Duis et ante gravida orci venenatis tincidunt. Fusce vitae 
 
 \section*{Results}
 
-Donec faucibus purus at tortor egestas eu fermentum dolor facilisis. Maecenas tempor dui eu neque fringilla rutrum. Mauris \emph{lobortis} nisl accumsan. Aenean vitae risus ante. Pellentesque condimentum dui. Etiam sagittis purus non tellus tempor volutpat. Donec et dui non massa tristique adipiscing.
-%
-\begin{wraptable}{l}{12cm} % Left or right alignment is specified in the first bracket, the width of the table is in the second
-\begin{tabular}{l l l}
-\toprule
-\textbf{Treatments} & \textbf{Response 1} & \textbf{Response 2}\\
-\midrule
-Treatment 1 & 0.0003262 & 0.562 \\
-Treatment 2 & 0.0015681 & 0.910 \\
-Treatment 3 & 0.0009271 & 0.296 \\
-\bottomrule
-\end{tabular}
-\captionof{table}{\color{Green} Table caption}
-\end{wraptable}
-%
-Phasellus imperdiet, tortor vitae congue bibendum, felis enim sagittis lorem, et volutpat ante orci sagittis mi. Morbi rutrum laoreet semper. Morbi accumsan enim nec tortor consectetur non commodo nisi sollicitudin. Proin sollicitudin. Pellentesque eget orci eros. Fusce ultricies, tellus et pellentesque fringilla, ante massa luctus libero, quis tristique purus urna nec nibh.
+some results
 
-Nulla ut porttitor enim. Suspendisse venenatis dui eget eros gravida tempor. Mauris feugiat elit et augue placerat ultrices. Morbi accumsan enim nec tortor consectetur non commodo. Pellentesque condimentum dui. Etiam sagittis purus non tellus tempor volutpat. Donec et dui non massa tristique adipiscing. Quisque vestibulum eros eu. Phasellus imperdiet, tortor vitae congue bibendum, felis enim sagittis lorem, et volutpat ante orci sagittis mi. Morbi rutrum laoreet semper. Morbi accumsan enim nec tortor consectetur non commodo nisi sollicitudin.
-
-\begin{center}\vspace{1cm}
-\includegraphics[width=0.8\linewidth]{placeholder}
-\captionof{figure}{\color{Green} Figure caption}
-\end{center}\vspace{1cm}
-
-In hac habitasse platea dictumst. Etiam placerat, risus ac.
-
-Adipiscing lectus in magna blandit:
-
-\begin{center}\vspace{1cm}
-\begin{tabular}{l l l l}
-\toprule
-\textbf{Treatments} & \textbf{Response 1} & \textbf{Response 2} \\
-\midrule
-Treatment 1 & 0.0003262 & 0.562 \\
-Treatment 2 & 0.0015681 & 0.910 \\
-Treatment 3 & 0.0009271 & 0.296 \\
-\bottomrule
-\end{tabular}
-\captionof{table}{\color{Green} Table caption}
-\end{center}\vspace{1cm}
-
-Vivamus sed nibh ac metus tristique tristique a vitae ante. Sed lobortis mi ut arcu fringilla et adipiscing ligula rutrum. Aenean turpis velit, placerat eget tincidunt nec, ornare in nisl. In placerat.
-
-\begin{center}\vspace{1cm}
-\includegraphics[width=0.8\linewidth]{placeholder}
-\captionof{figure}{\color{Green} Figure caption}
-\end{center}\vspace{1cm}
 
 %----------------------------------------------------------------------------------------
 %	CONCLUSIONS
@@ -229,12 +243,12 @@ Vivamus sed nibh ac metus tristique tristique a vitae ante. Sed lobortis mi ut a
 
 \section*{Conclusions}
 
-\begin{itemize}
-\item As it is shown on Pellentesque eget orci eros. Fusce ultricies, tellus et pellentesque fringilla, ante massa luctus libero, quis tristique purus urna nec nibh. Phasellus fermentum rutrum elementum. Nam quis justo lectus.
 
-\item Vestibulum sem ante, hendrerit a gravida ac, blandit quis magna.
-\item Donec sem metus, facilisis at condimentum eget, vehicula ut massa. Morbi consequat, diam sed convallis tincidunt, arcu nunc.
-\item Nunc at convallis urna. isus ante. Pellentesque condimentum dui. Etiam sagittis purus non tellus tempor volutpat. Donec et dui non massa tristique adipiscing.
+\begin{itemize}
+\item After runing the 10 days interval data, the p-value is $9.03*10^{-11}$ and the $R^2$ is around 0.27. It indicates that there is an moderate correlation between emotional factors and stock market price from the perspective of this research. However, it may just be the coincidence of the data set. There are still a few improvements of the research. 
+\item How we actually calculate the emotion is flawed. Think more about the content of the scoring mechanism, we will naturally realize that our emotions do not purely depend on the word we choose, but also include the content of the sentences. 
+\item The keywords search should be more generalized
+\item Tweets capturing accuracy
 \end{itemize}
 
 \color{DarkSlateGray} % Set the color back to DarkSlateGray for the rest of the content
@@ -245,7 +259,9 @@ Vivamus sed nibh ac metus tristique tristique a vitae ante. Sed lobortis mi ut a
 
 \section*{Forthcoming Research}
 
-Vivamus molestie, risus tempor vehicula mattis, libero arcu volutpat purus, sed blandit sem nibh eget turpis. Maecenas rutrum dui blandit lorem vulputate gravida. Praesent venenatis mi vel lorem tempor at varius diam sagittis. Nam eu leo id turpis interdum luctus a sed augue. Nam tellus.
+The next stage of the research will be improving dictions by adapting a wordlist that differentiates the emotional level of the words. Or using maching learning to analyze the emotion by Google Opinion Finder. The keywords search needs improvement as "stock market" is not the only thing that is related to the stock market. A specific company analysis may also be run considering the public exposure of each company is different. 
+The program is also expected to run the analysis test and prediction at the same time for potential contribution to the trading strategy
+
 
  %----------------------------------------------------------------------------------------
 %	REFERENCES
@@ -261,8 +277,7 @@ Vivamus molestie, risus tempor vehicula mattis, libero arcu volutpat purus, sed 
 
 \section*{Acknowledgements}
 
-Etiam fermentum, arcu ut gravida fringilla, dolor arcu laoreet justo, ut imperdiet urna arcu a arcu. Donec nec ante a dui tempus consectetur. Cras nisi turpis, dapibus sit amet mattis sed, laoreet.
-
+I am thankfull to PRISMS for providing time and support for my endevours.
 %----------------------------------------------------------------------------------------
 
 \end{multicols}
