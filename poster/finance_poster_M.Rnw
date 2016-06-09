@@ -1,0 +1,237 @@
+%%%%%%%%%%%%% TO run it - create a new Project in Rstudio - from existing folder - specify this poster folder
+%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% a0poster Landscape Poster
+% LaTeX Template
+% Version 1.0 (22/06/13)
+%
+% The a0poster class was created by:
+% Gerlinde Kettl and Matthias Weiser (tex@kettl.de)
+% 
+% This template has been downloaded from:
+% http://www.LaTeXTemplates.com
+%
+% License:
+% CC BY-NC-SA 3.0 (http://creativecommons.org/licenses/by-nc-sa/3.0/)
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%----------------------------------------------------------------------------------------
+%	PACKAGES AND OTHER DOCUMENT CONFIGURATIONS
+%----------------------------------------------------------------------------------------
+
+\documentclass[a0,landscape]{a0poster}
+
+\usepackage{multicol} % This is so we can have multiple columns of text side-by-side
+\columnsep=100pt % This is the amount of white space between the columns in the poster
+\columnseprule=3pt % This is the thickness of the black line between the columns in the poster
+
+\usepackage[svgnames]{xcolor} % Specify colors by their 'svgnames', for a full list of all colors available see here: http://www.latextemplates.com/svgnames-colors
+
+\usepackage{times} % Use the times font
+%\usepackage{palatino} % Uncomment to use the Palatino font
+
+\usepackage{graphicx} % Required for including images
+\graphicspath{{figures/}} % Location of the graphics files
+\usepackage{booktabs} % Top and bottom rules for table
+\usepackage[font=small,labelfont=bf]{caption} % Required for specifying captions to tables and figures
+\usepackage{amsfonts, amsmath, amsthm, amssymb} % For math fonts, symbols and environments
+\usepackage{wrapfig} % Allows wrapping text around tables and figures
+
+\begin{document}
+
+%----------------------------------------------------------------------------------------
+%	POSTER HEADER 
+%----------------------------------------------------------------------------------------
+
+% The header is divided into three boxes:
+% The first is 55% wide and houses the title, subtitle, names and university/organization
+% The second is 25% wide and houses contact information
+% The third is 19% wide and houses a logo for your university/organization or a photo of you
+% The widths of these boxes can be easily edited to accommodate your content as you see fit
+
+\begin{minipage}[b]{0.65\linewidth}
+\veryHuge \color{NavyBlue} \textbf{Correlations between emotional factors and the stock market} \color{Black}\\ \\% Title
+\huge \textbf{M. Xiong}\\ % Author(s)
+\huge Data Science Research Laboratory. Mentor: Dr. S. Samsonau\\ % Subtitle
+\huge Princeton International School of Mathematics and Science\\ % University/organization
+\end{minipage}
+%
+\begin{minipage}[b]{0.2\linewidth}
+\color{DarkSlateGray}\Large \textbf{Address and Contact Information:}\\
+19 Lambert Dr, Princeton NJ 08540\\ % Address
+e-mail: \texttt{Max.Xiong@prismsus.org}\\ % Email address
+\end{minipage}
+%
+\begin{minipage}[b]{0.14\linewidth}
+\includegraphics[width=13cm]{PRISMS_Logo.jpg} % Logo or a photo of you, adjust its dimensions here
+\end{minipage}
+
+\vspace{1cm} % A bit of extra whitespace between the header and poster content
+
+%----------------------------------------------------------------------------------------
+
+\begin{multicols}{4} % This is how many columns your poster will be broken into, a poster with many figures may benefit from less columns whereas a text-heavy poster benefits from more
+
+%----------------------------------------------------------------------------------------
+%	ABSTRACT
+%----------------------------------------------------------------------------------------
+
+\color{Navy} % Navy color for the abstract
+
+\begin{abstract}
+
+When people talk about stock market, they most likely relate it to the pure number analysis such as operation profitability, debt equity ratio, dividens for investors, etc. Computer algorithm controls more than fifty percent of the trading volume and human seems less important in this process than in the past. However, the factors of large capital invested by normal investors are still considerable. In order to analyze what may possibly influence the decisions made by traditional investors, this research studies the emotion factors in investment, as information is the fundamental criteria for normal investors by quantifying the emtional levels
+
+
+\end{abstract}
+
+%----------------------------------------------------------------------------------------
+%	INTRODUCTION
+%----------------------------------------------------------------------------------------
+
+\color{SaddleBrown} % SaddleBrown color for the introduction
+
+\section*{Introduction}
+
+The main factor that will influence investors's emotion is the information they received about the stock market. The information can be conveyed from traditional media such as newspaper, broadcast, and television. It can also be received through modern social media including Facebook, Twitter, blogs, and numerous websites. 
+
+In order to have concrete evidence to support the potential relationship between investors' emotion and stock price or to reject this hypothesis, it is necessary to find a way to use numbers to represent the emotional level. In the reearch of the sentiment analysis, Scientists go through the lexicon and build different versions of word lists to describe the emotions when people use certain words. They conclude each word to be either positive and negative sometimes with different degrees of positivity and negativity. The simplest version would be dividing words into positive words and negative words, and positive words will be assigned to the number 1, while ngeative words will be assigned to be -1. The sum of score of all numbers in one sentence represent the negativity or positivity of the emotion.In some lexicon, words are divided into more specific categories: some words has the value of +2 or +3 and others have -3 or -4. After having a way to quantify emotion, statistical analysis can be run to verify the potential relationship. 
+
+In the Johan Bollen, Huina Mao, Xiao-jun Zeng's Twitter Mood Predicts the Stock Market, researchers choose to study whether measurementsof collective mood states derived from large-scale Twitter feedsare correlated to the value of the Dow Jones Industrial Average over time. They firstly collected more than 9.8 million tweets from 2/28/2008 to 12/19/2008 and process all the text through two sentiment analysis tool, Opinion Finder and Google-Profile of Mood States, which can analyze emotions in 6 dimensions. Then, they run the Granger-causality test to verify whether collective mood states is the predictive factor of stock price. They find an accuracy of 87.6 percentin predicting the daily up and own changes in the closing values of the DJIA and a reduction of the Mean Average Percentage Error by more than 6 percent.
+
+
+%----------------------------------------------------------------------------------------
+%	OBJECTIVES
+%----------------------------------------------------------------------------------------
+
+\color{DarkSlateGray} % DarkSlateGray color for the rest of the content
+
+\section*{Main Objectives}
+
+\begin{enumerate}
+\item Caputure and Clean Tweets
+\item Capture Stock Price Data
+\item Score Tweets and Merge by Time
+\item Granger-Causality Test and Analysis
+\end{enumerate}
+
+%----------------------------------------------------------------------------------------
+%	MATERIALS AND METHODS
+%----------------------------------------------------------------------------------------
+
+\section*{Materials and Methods}
+
+I choose Twitter to be the main social media platform to collect twitter feeds. The Twitter API allows user to collect tweets based on different types of filters. I choose to search for tweets that contain certain key words. The key words are the independent variables in the research. And I have chosen stock market to be the keyword in my research. After collecting data, I proceed data cleaning by converting all files into txt form in order to be scored according to the sentiment analysis wordlist.Then, the google data is collected for stock price. The last section is the granger-causality test and running cross validation to verify the relationship between emotions and stock price.
+
+%------------------------------------------------
+
+\subsection*{Coding Section}
+
+\item The first step in cpatureing tweets or collecting data is connecting the local user with the Twitter API in order to use the searching function online to capture tweets. Twitter API provides certain functions for public study. After registrering an Twitter App online, authorization (handshakes) will request user to allow the access, and then the OAuthFactory function connnects the API and store the authorization information to the local file "my_oauth.Rdata".
+
+\item Then the data capturing process first read the authorization informaiton and stream tweets that contain keyworkds entered by user in the function filterStream. It stores the data in a local variable called "tweets.json" as the format of streaming is json. Name can be changed while data will stored additionally with the same name. ParseTweets function convert all tweets collect into a data frame with time, content, user, location etc. 
+
+\item In order to process the tweets we collect, mainly scoring the emotion of each tweet. In the scoreing function, we get rid of all special symbols, starting users name,  punctuation, digit, link, capital letter. It will be easier for judging whether one string contains on string. 
+
+\item In the scoring function, we use a for loop to search for the positive or negtive word in one specific string. It is fairly easy to achieve by lookup each word in the word list and record number of positive words and negtive words and calculate the difference bweteen them. However, we also have to get rid of the repetitive count when two positive words or two negative words contain one of the other. The for loop firstly run through negative words and delete repetitive terms and executes in the same way for positive words. 
+
+\item Google provides last 15 days of data with one minutes interval. We only have to contruct the url string to access the txt format of table and then format them together. We first go to the url, get organize the data into columns. We then search for the time stamp, which is in POSCIX format. Then we convert it to EST and get two columns from this data frame: price closed and time for the future analysis 
+
+\item After we put the tweets into a data frame, we then run the clean and score functions to process the information we have. Then merge the score and the price tables by time. Meanwhile, we also make the smallest units to be 1 minutes instead of 1 second because Google data does not provide the instaneous price. 
+
+\item GrangerCausality Test shows that whether one factor is the predictive factors of another. It uses one factor at first then use two factors to see the correlation between two polynomials by F test. The result will show R square, the percentage of data or correlation that can be explained. It will tell whether a factor is significant predictive factor of the other. In this test, we wants to see whether emotion is the deterministic factor of the stock price. We only have to assgin our previous two columns to be time series data and run the granger-causality test code. 
+
+%----------------------------------------------------------------------------------------
+%	RESULTS 
+%----------------------------------------------------------------------------------------
+
+\section*{Results}
+
+Donec faucibus purus at tortor egestas eu fermentum dolor facilisis. Maecenas tempor dui eu neque fringilla rutrum. Mauris \emph{lobortis} nisl accumsan. Aenean vitae risus ante. Pellentesque condimentum dui. Etiam sagittis purus non tellus tempor volutpat. Donec et dui non massa tristique adipiscing.
+%
+\begin{wraptable}{l}{12cm} % Left or right alignment is specified in the first bracket, the width of the table is in the second
+\begin{tabular}{l l l}
+\toprule
+\textbf{Treatments} & \textbf{Response 1} & \textbf{Response 2}\\
+\midrule
+Treatment 1 & 0.0003262 & 0.562 \\
+Treatment 2 & 0.0015681 & 0.910 \\
+Treatment 3 & 0.0009271 & 0.296 \\
+\bottomrule
+\end{tabular}
+\captionof{table}{\color{Green} Table caption}
+\end{wraptable}
+%
+Phasellus imperdiet, tortor vitae congue bibendum, felis enim sagittis lorem, et volutpat ante orci sagittis mi. Morbi rutrum laoreet semper. Morbi accumsan enim nec tortor consectetur non commodo nisi sollicitudin. Proin sollicitudin. Pellentesque eget orci eros. Fusce ultricies, tellus et pellentesque fringilla, ante massa luctus libero, quis tristique purus urna nec nibh.
+
+Nulla ut porttitor enim. Suspendisse venenatis dui eget eros gravida tempor. Mauris feugiat elit et augue placerat ultrices. Morbi accumsan enim nec tortor consectetur non commodo. Pellentesque condimentum dui. Etiam sagittis purus non tellus tempor volutpat. Donec et dui non massa tristique adipiscing. Quisque vestibulum eros eu. Phasellus imperdiet, tortor vitae congue bibendum, felis enim sagittis lorem, et volutpat ante orci sagittis mi. Morbi rutrum laoreet semper. Morbi accumsan enim nec tortor consectetur non commodo nisi sollicitudin.
+
+\begin{center}\vspace{1cm}
+\includegraphics[width=0.8\linewidth]{placeholder}
+\captionof{figure}{\color{Green} Figure caption}
+\end{center}\vspace{1cm}
+
+In hac habitasse platea dictumst. Etiam placerat, risus ac.
+
+Adipiscing lectus in magna blandit:
+
+\begin{center}\vspace{1cm}
+\begin{tabular}{l l l l}
+\toprule
+\textbf{Treatments} & \textbf{Response 1} & \textbf{Response 2} \\
+\midrule
+Treatment 1 & 0.0003262 & 0.562 \\
+Treatment 2 & 0.0015681 & 0.910 \\
+Treatment 3 & 0.0009271 & 0.296 \\
+\bottomrule
+\end{tabular}
+\captionof{table}{\color{Green} Table caption}
+\end{center}\vspace{1cm}
+
+Vivamus sed nibh ac metus tristique tristique a vitae ante. Sed lobortis mi ut arcu fringilla et adipiscing ligula rutrum. Aenean turpis velit, placerat eget tincidunt nec, ornare in nisl. In placerat.
+
+\begin{center}\vspace{1cm}
+\includegraphics[width=0.8\linewidth]{placeholder}
+\captionof{figure}{\color{Green} Figure caption}
+\end{center}\vspace{1cm}
+
+%----------------------------------------------------------------------------------------
+%	CONCLUSIONS
+%----------------------------------------------------------------------------------------
+
+\color{SaddleBrown} % SaddleBrown color for the conclusions to make them stand out
+
+\section*{Conclusions}
+
+\begin{itemize}
+\item After runing the 10 days interval data,the p-value is 9.03*10^-11 and the R2 is around 0.27. It indicates that there is an moderate correlation between emotional factors and stock market price from the perspective of this research. However, it may just be the coincidence of the data set. There are still a few improvements of the research. 
+\item How we actually calculate the emotion is flawed. Think more about the content of the scoring mechanism, we will naturally realize that our emotions do not purely depend on the word we choose, but also include the content of the sentences. 
+\item The keywords search should be more generalized
+\item Tweets capturing accuracy
+\end{itemize}
+
+\color{DarkSlateGray} % Set the color back to DarkSlateGray for the rest of the content
+
+%----------------------------------------------------------------------------------------
+%	FORTHCOMING RESEARCH
+%----------------------------------------------------------------------------------------
+
+\section*{Forthcoming Research}
+
+The next stage of the research will be improving dictions by adapting a wordlist that differentiates the emotional level of the words. Or using maching learning to analyze the emotion by Google Opinion Finder. The keywords search needs improvement as "stock market" is not the only thing that is related to the stock market. A specific company analysis may also be run considering the public exposure of each company is different. 
+The program is also expected to run the analysis test and prediction at the same time for potential contribution to the trading strategy
+
+ %----------------------------------------------------------------------------------------
+%	REFERENCES
+%----------------------------------------------------------------------------------------
+
+\nocite{*} % Print all references regardless of whether they were cited in the poster or not
+\bibliographystyle{plain} % Plain referencing style
+\bibliography{sample} % Use the example bibliography file sample.bib
+
+
+%----------------------------------------------------------------------------------------
+
+\end{multicols}
+\end{document}

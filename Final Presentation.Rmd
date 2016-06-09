@@ -261,6 +261,8 @@ granger(cbind(egg,chic),L=1)
 ```
 GrangerCausality Test shows that whether one factor is the predictive factors of another. It uses one factor at first then use two factors to see the correlation between two polynomials by F test. The result will show R square, the percentage of data or correlation that can be explained. It will tell whether a factor is significant predictive factor of the other. In this test, we wants to see whether emotion is the deterministic factor of the stock price. We only have to assgin our previous two columns to be time series data and run the granger-causality test code. 
 
+The final result showed that the R squared is around 0.2. The correlation coefficient value is 0.45, which shows the moderate correlation between emtional factors and stock market price. 
+
 ## Conclusion
-After I run a few test data.One of the largest data set showed me that the R square of the relationship is only 2 percent. Means that from the smaller scale of the perspective, the emtion does not have strong correlation with the stock market data. However, it may be caused by the bias of key words, the amount of data provided, or the positive negative word lists. 
+After runing the 10 days interval data,the p-value is 9.03*10^-11 and the R2 is around 0.27. It indicates that there is an moderate correlation between emotional factors and stock market price from the perspective of this research. However, it may just be the coincidence of the data set. There are still a few improvements of the research. 
 How we actually calculate the emotion is flawed. Think more about the content of the scoring mechanism, we will naturally realize that our emotions do not purely depend on the word we choose, but also include the content of the sentences. 
