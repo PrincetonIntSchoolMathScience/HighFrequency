@@ -81,12 +81,7 @@ e-mail: \texttt{Max.Xiong@prismsus.org}\\ % Email address
 
 \begin{abstract}
 
-Sed fringilla tempus hendrerit. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Etiam ut elit sit amet metus lobortis consequat sit amet in libero. 
-
-<<size ="small">>=
-library(knitr)
-kable(head(mtcars))
-@
+When people talk about stock market, they most likely relate it to the pure number analysis such as operation profitability, debt equity ratio, dividens for investors, etc. Computer algorithm controls more than fifty percent of the trading volume and human seems less important in this process than in the past. However, the factors of large capital invested by normal investors are still considerable. In order to analyze what may possibly influence the decisions made by traditional investors, this research studies the emotion factors in investment, as information is the fundamental criteria for normal investors by quantifying the emtional levels
 
 
 \end{abstract}
@@ -99,17 +94,13 @@ kable(head(mtcars))
 
 \section*{Introduction}
 
-Aliquam non lacus dolor, \textit{a aliquam quam} \cite{Smith:2012qr}. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nulla in nibh mauris. Donec vel ligula nisi, a lacinia arcu. Sed mi dui, malesuada vel consectetur et, egestas porta nisi. Sed eleifend pharetra dolor, et dapibus est vulputate eu. \textbf{Integer faucibus elementum felis vitae fringilla.} 
+The main factor that will influence investors's emotion is the information they received about the stock market. The information can be conveyed from traditional media such as newspaper, broadcast, and television. It can also be received through modern social media including Facebook, Twitter, blogs, and numerous websites. 
 
-<<size ="small">>=
-library(ggplot2)
-ggplot(data = mpg) + 
-  geom_point(mapping = aes(x = displ, y = hwy, 
-                           color = class))
-@
+In order to have concrete evidence to support the potential relationship between investors' emotion and stock price or to reject this hypothesis, it is necessary to find a way to use numbers to represent the emotional level. In the reearch of the sentiment analysis, Scientists go through the lexicon and build different versions of word lists to describe the emotions when people use certain words. They conclude each word to be either positive and negative sometimes with different degrees of positivity and negativity. The simplest version would be dividing words into positive words and negative words, and positive words will be assigned to the number 1, while ngeative words will be assigned to be -1. The sum of score of all numbers in one sentence represent the negativity or positivity of the emotion.In some lexicon, words are divided into more specific categories: some words has the value of +2 or +3 and others have -3 or -4. After having a way to quantify emotion, statistical analysis can be run to verify the potential relationship. 
+
+In the Johan Bollen, Huina Mao, Xiao-jun Zeng's Twitter Mood Predicts the Stock Market, researchers choose to study whether measurementsof collective mood states derived from large-scale Twitter feedsare correlated to the value of the Dow Jones Industrial Average over time. They firstly collected more than 9.8 million tweets from 2/28/2008 to 12/19/2008 and process all the text through two sentiment analysis tool, Opinion Finder and Google-Profile of Mood States, which can analyze emotions in 6 dimensions. Then, they run the Granger-causality test to verify whether collective mood states is the predictive factor of stock price. They find an accuracy of 87.6 percentin predicting the daily up and own changes in the closing values of the DJIA and a reduction of the Mean Average Percentage Error by more than 6 percent.
 
 
-\textit{Aliquam auctor}, metus id ultrices porta, risus enim cursus sapien, quis iaculis sapien tortor sed odio. Mauris ante orci, euismod vitae tincidunt eu, porta ut neque. Aenean sapien est, viverra vel lacinia nec, venenatis eu nulla. Maecenas ut nunc nibh, et tempus libero. Aenean vitae risus ante. Pellentesque condimentum dui. Etiam sagittis purus non tellus tempor volutpat. Donec et dui non massa tris
 %----------------------------------------------------------------------------------------
 %	OBJECTIVES
 %----------------------------------------------------------------------------------------
@@ -119,14 +110,10 @@ ggplot(data = mpg) +
 \section*{Main Objectives}
 
 \begin{enumerate}
-\item Lorem ipsum dolor sit amet, consectetur.
-\item Nullam at mi nisl. Vestibulum est purus, ultricies cursus volutpat sit amet, vestibulum eu.
-\item Praesent tortor libero, vulputate quis elementum a, iaculis.
-\item Phasellus a quam mauris, non varius mauris. Fusce tristique, enim tempor varius porta, elit purus commodo velit, pretium mattis ligula nisl nec ante.
-\item Ut adipiscing accumsan sapien, sit amet pretium.
-\item Estibulum est purus, ultricies cursus volutpat
-\item Nullam at mi nisl. Vestibulum est purus, ultricies cursus volutpat sit amet, vestibulum eu.
-\item Praesent tortor libero, vulputate quis elementum a, iaculis.
+\item Caputure and Clean Tweets
+\item Capture Stock Price Data
+\item Score Tweets and Merge by Time
+\item Granger-Causality Test and Analysis
 \end{enumerate}
 
 %----------------------------------------------------------------------------------------
@@ -135,37 +122,25 @@ ggplot(data = mpg) +
 
 \section*{Materials and Methods}
 
-Fusce magna risus, molestie ut porttitor in, consectetur sed mi. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Pellentesque consectetur blandit pellentesque. Sed odio justo, viverra nec porttitor vel, lacinia a nunc. Suspendisse pulvinar euismod arcu, sit amet accumsan enim fermentum quis. In id mau, ante massa luctus libero, quis tristique purus urna nec nibh.
+I choose Twitter to be the main social media platform to collect twitter feeds. The Twitter API allows user to collect tweets based on different types of filters. I choose to search for tweets that contain certain key words. The key words are the independent variables in the research. And I have chosen stock market to be the keyword in my research. After collecting data, I proceed data cleaning by converting all files into txt form in order to be scored according to the sentiment analysis wordlist.Then, the google data is collected for stock price. The last section is the granger-causality test and running cross validation to verify the relationship between emotions and stock price.
 
 %------------------------------------------------
 
-\subsection*{Mathematical Section}
+\subsection*{Coding Section}
 
-Nulla vel nisl sed mauris auctor mollis non sed. 
+\item The first step in cpatureing tweets or collecting data is connecting the local user with the Twitter API in order to use the searching function online to capture tweets. Twitter API provides certain functions for public study. After registrering an Twitter App online, authorization (handshakes) will request user to allow the access, and then the OAuthFactory function connnects the API and store the authorization information to the local file "my_oauth.Rdata".
 
-\begin{equation}
-E = mc^{2}
-\label{eqn:Einstein}
-\end{equation}
+\item Then the data capturing process first read the authorization informaiton and stream tweets that contain keyworkds entered by user in the function filterStream. It stores the data in a local variable called "tweets.json" as the format of streaming is json. Name can be changed while data will stored additionally with the same name. ParseTweets function convert all tweets collect into a data frame with time, content, user, location etc. 
 
-Curabitur mi sem, pulvinar quis aliquam rutrum. (1) edf (2)
-, $\Omega=[-1,1]^3$, maecenas leo est, ornare at. $z=-1$ edf $z=1$ sed interdum felis dapibus sem. $x$ set $y$ ytruem. 
-Turpis $j$ amet accumsan enim $y$-lacina; 
-ref $k$-viverra nec porttitor $x$-lacina. 
+\item In order to process the tweets we collect, mainly scoring the emotion of each tweet. In the scoreing function, we get rid of all special symbols, starting users name,  punctuation, digit, link, capital letter. It will be easier for judging whether one string contains on string. 
 
-Vestibulum ac diam a odio tempus congue. Vivamus id enim nisi:
+\item In the scoring function, we use a for loop to search for the positive or negtive word in one specific string. It is fairly easy to achieve by lookup each word in the word list and record number of positive words and negtive words and calculate the difference bweteen them. However, we also have to get rid of the repetitive count when two positive words or two negative words contain one of the other. The for loop firstly run through negative words and delete repetitive terms and executes in the same way for positive words. 
 
-\begin{eqnarray}
-\cos\bar{\phi}_k Q_{j,k+1,t} + Q_{j,k+1,x}+\frac{\sin^2\bar{\phi}_k}{T\cos\bar{\phi}_k} Q_{j,k+1} &=&\nonumber\\ 
--\cos\phi_k Q_{j,k,t} + Q_{j,k,x}-\frac{\sin^2\phi_k}{T\cos\phi_k} Q_{j,k}\label{edgek}
-\end{eqnarray}
-and
-\begin{eqnarray}
-\cos\bar{\phi}_j Q_{j+1,k,t} + Q_{j+1,k,y}+\frac{\sin^2\bar{\phi}_j}{T\cos\bar{\phi}_j} Q_{j+1,k}&=&\nonumber \\
--\cos\phi_j Q_{j,k,t} + Q_{j,k,y}-\frac{\sin^2\phi_j}{T\cos\phi_j} Q_{j,k}.\label{edgej}
-\end{eqnarray} 
+\item Google provides last 15 days of data with one minutes interval. We only have to contruct the url string to access the txt format of table and then format them together. We first go to the url, get organize the data into columns. We then search for the time stamp, which is in POSCIX format. Then we convert it to EST and get two columns from this data frame: price closed and time for the future analysis 
 
-Nulla sed arcu arcu. Duis et ante gravida orci venenatis tincidunt. Fusce vitae lacinia metus. Pellentesque habitant morbi. $\mathbf{A}\underline{\xi}=\underline{\beta}$ Vim $\underline{\xi}$ enum nidi $3(P+2)^{2}$ lacina. Id feugain $\mathbf{A}$ nun quis; magno. Fusce convallis rutrum turpis, quis aliquet enim accumsan id. Vestibulum ullamcorper porttitor convallis. Integer sagittis interdum malesuada. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Sed adipiscing tristique orci at ullamcorper. Morbi accumsan, urna et porttitor pulvinar, lacus risus dignissim massa. Proin sollicitudin. Pellentesque eget orci eros. Fusce ultricies, tellus et pellentesque fringilla, ante massa luctus libero, quis tristique purus urna nec nibh.
+\item After we put the tweets into a data frame, we then run the clean and score functions to process the information we have. Then merge the score and the price tables by time. Meanwhile, we also make the smallest units to be 1 minutes instead of 1 second because Google data does not provide the instaneous price. 
+
+\item GrangerCausality Test shows that whether one factor is the predictive factors of another. It uses one factor at first then use two factors to see the correlation between two polynomials by F test. The result will show R square, the percentage of data or correlation that can be explained. It will tell whether a factor is significant predictive factor of the other. In this test, we wants to see whether emotion is the deterministic factor of the stock price. We only have to assgin our previous two columns to be time series data and run the granger-causality test code. 
 
 %----------------------------------------------------------------------------------------
 %	RESULTS 
@@ -230,11 +205,10 @@ Vivamus sed nibh ac metus tristique tristique a vitae ante. Sed lobortis mi ut a
 \section*{Conclusions}
 
 \begin{itemize}
-\item As it is shown on Pellentesque eget orci eros. Fusce ultricies, tellus et pellentesque fringilla, ante massa luctus libero, quis tristique purus urna nec nibh. Phasellus fermentum rutrum elementum. Nam quis justo lectus.
-
-\item Vestibulum sem ante, hendrerit a gravida ac, blandit quis magna.
-\item Donec sem metus, facilisis at condimentum eget, vehicula ut massa. Morbi consequat, diam sed convallis tincidunt, arcu nunc.
-\item Nunc at convallis urna. isus ante. Pellentesque condimentum dui. Etiam sagittis purus non tellus tempor volutpat. Donec et dui non massa tristique adipiscing.
+\item After runing the 10 days interval data,the p-value is 9.03*10^-11 and the R2 is around 0.27. It indicates that there is an moderate correlation between emotional factors and stock market price from the perspective of this research. However, it may just be the coincidence of the data set. There are still a few improvements of the research. 
+\item How we actually calculate the emotion is flawed. Think more about the content of the scoring mechanism, we will naturally realize that our emotions do not purely depend on the word we choose, but also include the content of the sentences. 
+\item The keywords search should be more generalized
+\item Tweets capturing accuracy
 \end{itemize}
 
 \color{DarkSlateGray} % Set the color back to DarkSlateGray for the rest of the content
@@ -245,7 +219,8 @@ Vivamus sed nibh ac metus tristique tristique a vitae ante. Sed lobortis mi ut a
 
 \section*{Forthcoming Research}
 
-Vivamus molestie, risus tempor vehicula mattis, libero arcu volutpat purus, sed blandit sem nibh eget turpis. Maecenas rutrum dui blandit lorem vulputate gravida. Praesent venenatis mi vel lorem tempor at varius diam sagittis. Nam eu leo id turpis interdum luctus a sed augue. Nam tellus.
+The next stage of the research will be improving dictions by adapting a wordlist that differentiates the emotional level of the words. Or using maching learning to analyze the emotion by Google Opinion Finder. The keywords search needs improvement as "stock market" is not the only thing that is related to the stock market. A specific company analysis may also be run considering the public exposure of each company is different. 
+The program is also expected to run the analysis test and prediction at the same time for potential contribution to the trading strategy
 
  %----------------------------------------------------------------------------------------
 %	REFERENCES
@@ -255,13 +230,6 @@ Vivamus molestie, risus tempor vehicula mattis, libero arcu volutpat purus, sed 
 \bibliographystyle{plain} % Plain referencing style
 \bibliography{sample} % Use the example bibliography file sample.bib
 
-%----------------------------------------------------------------------------------------
-%	ACKNOWLEDGEMENTS
-%----------------------------------------------------------------------------------------
-
-\section*{Acknowledgements}
-
-Etiam fermentum, arcu ut gravida fringilla, dolor arcu laoreet justo, ut imperdiet urna arcu a arcu. Donec nec ante a dui tempus consectetur. Cras nisi turpis, dapibus sit amet mattis sed, laoreet.
 
 %----------------------------------------------------------------------------------------
 
