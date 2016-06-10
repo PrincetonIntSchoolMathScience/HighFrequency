@@ -26,6 +26,6 @@ chic<-ts(as.numeric(CompareData$CLOSE))
 } 
 library(lmtest)
 res <- granger(cbind(egg,chic),L=1)
-resDF <- data.frame("ftest" = format(res$ftest, digits=2, nsmall=2),
-                    "p-value" = format(res$p.val, digits=2, nsmall=2), 
-                    "R-squared" = format(res$R2, digits=2, nsmall=2))
+resDF <- data.frame("ftest" = format(res$ftest, digits=3, nsmall=3),
+                    "p-value" = format(res$p.val, digits=3, nsmall=3), 
+                    "R-squared" = format(res$R2, digits=3, nsmall=3))
